@@ -5,149 +5,341 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Admin Dashboard</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Outfit:wght@500;700;800&display=swap"
+        rel="stylesheet">
     <style>
+        :root {
+            --primary: #4f46e5;
+            --primary-dark: #4338ca;
+            --secondary: #ec4899;
+            --bg-body: #f8fafc;
+            --bg-card: #ffffff;
+            --text-main: #1e293b;
+            --text-muted: #64748b;
+            --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.1);
+            --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+            --gradient-main: linear-gradient(135deg, #4f46e5 0%, #ec4899 100%);
+            --radius: 1rem;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
         body {
-            font-family: sans-serif;
-            padding: 20px;
-            background: #f4f4f4;
+            font-family: 'Inter', sans-serif;
+            background-color: var(--bg-body);
+            color: var(--text-main);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
         }
 
-        .container {
-            max-width: 800px;
-            margin: 0 auto;
-            background: white;
-            padding: 20px;
-            border-radius: 8px;
-            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        /* Login Styles */
+        #login-view {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            background: linear-gradient(rgba(79, 70, 229, 0.05), rgba(236, 72, 153, 0.05));
         }
 
-        h1,
-        h2 {
-            color: #333;
-        }
-
-        .stat-box {
-            display: inline-block;
-            width: 45%;
-            background: #eef;
-            padding: 15px;
-            margin: 10px 0;
-            border-radius: 5px;
+        #login-form {
+            width: 100%;
+            max-width: 400px;
+            background: var(--bg-card);
+            padding: 2.5rem;
+            border-radius: var(--radius);
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
             text-align: center;
         }
 
+        #login-form h2 {
+            font-family: 'Outfit', sans-serif;
+            font-size: 1.8rem;
+            color: var(--text-main);
+            margin-bottom: 2rem;
+            font-weight: 700;
+        }
+
+        input {
+            width: 100%;
+            padding: 0.875rem;
+            margin-bottom: 1rem;
+            border: 1px solid #e2e8f0;
+            border-radius: 0.5rem;
+            font-size: 1rem;
+            font-family: inherit;
+            transition: all 0.2s;
+            outline: none;
+        }
+
+        input:focus {
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.1);
+        }
+
+        button {
+            width: 100%;
+            padding: 0.875rem;
+            background: var(--primary);
+            color: white;
+            border: none;
+            border-radius: 0.5rem;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        button:hover {
+            background: var(--primary-dark);
+            transform: translateY(-1px);
+        }
+
+        /* Dashboard Styles */
+        .dashboard-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem;
+            width: 100%;
+        }
+
+        .dashboard-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 3rem;
+        }
+
+        .dashboard-title {
+            font-family: 'Outfit', sans-serif;
+            font-size: 2rem;
+            font-weight: 800;
+            background: var(--gradient-main);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .logout-btn {
+            background: white;
+            color: var(--text-muted);
+            border: 1px solid #e2e8f0;
+            width: auto;
+            padding: 0.5rem 1.5rem;
+            font-size: 0.9rem;
+        }
+
+        .logout-btn:hover {
+            background: #f1f5f9;
+            color: var(--text-main);
+            border-color: #cbd5e1;
+            transform: none;
+        }
+
+        /* Stats Grid */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 3rem;
+        }
+
+        .stat-card {
+            background: var(--bg-card);
+            padding: 1.5rem;
+            border-radius: var(--radius);
+            box-shadow: var(--shadow-sm);
+            border: 1px solid #e2e8f0;
+            display: flex;
+            align-items: center;
+            gap: 1.5rem;
+        }
+
+        .stat-icon {
+            width: 60px;
+            height: 60px;
+            background: rgba(79, 70, 229, 0.1);
+            color: var(--primary);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.8rem;
+        }
+
+        .stat-info h3 {
+            font-size: 0.9rem;
+            color: var(--text-muted);
+            font-weight: 500;
+            margin-bottom: 0.25rem;
+        }
+
         .stat-value {
-            font-size: 2em;
-            font-weight: bold;
-            color: #007bff;
+            font-size: 2rem;
+            font-family: 'Outfit', sans-serif;
+            font-weight: 700;
+            color: var(--text-main);
+        }
+
+        /* Tables */
+        .table-section {
+            background: var(--bg-card);
+            border-radius: var(--radius);
+            box-shadow: var(--shadow-sm);
+            border: 1px solid #e2e8f0;
+            padding: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .table-header {
+            font-size: 1.25rem;
+            font-weight: 700;
+            color: var(--text-main);
+            margin-bottom: 1.5rem;
+            font-family: 'Outfit', sans-serif;
+        }
+
+        .table-container {
+            overflow-x: auto;
         }
 
         table {
             width: 100%;
             border-collapse: collapse;
-            margin-top: 10px;
-        }
-
-        th,
-        td {
-            border: 1px solid #ddd;
-            padding: 8px;
-            text-align: left;
+            font-size: 0.95rem;
         }
 
         th {
-            background-color: #f2f2f2;
+            text-align: left;
+            padding: 1rem;
+            background: #f8fafc;
+            color: var(--text-muted);
+            font-weight: 600;
+            font-size: 0.85rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            border-bottom: 1px solid #e2e8f0;
         }
 
-        #login-form {
-            max-width: 300px;
-            margin: 100px auto;
-            padding: 30px;
-            background: white;
-            border-radius: 8px;
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        td {
+            padding: 1rem;
+            color: var(--text-main);
+            border-bottom: 1px solid #f1f5f9;
         }
 
-        input {
-            width: 100%;
-            padding: 10px;
-            margin: 10px 0;
-            border: 1px solid #ccc;
-            border-radius: 4px;
-            box-sizing: border-box;
+        tr:last-child td {
+            border-bottom: none;
         }
 
-        button {
-            width: 100%;
-            padding: 10px;
-            background: #007bff;
-            color: white;
-            border: none;
-            border-radius: 4px;
-            cursor: pointer;
-        }
-
-        button:hover {
-            background: #0056b3;
+        tr:hover td {
+            background: #f8fafc;
         }
 
         .hidden {
-            display: none;
+            display: none !important;
+        }
+
+        .badge {
+            display: inline-block;
+            padding: 0.25rem 0.75rem;
+            border-radius: 9999px;
+            font-size: 0.75rem;
+            font-weight: 600;
+        }
+
+        .badge-blue {
+            background: #eff6ff;
+            color: #2563eb;
+        }
+
+        .badge-pink {
+            background: #fdf2f8;
+            color: #db2777;
         }
     </style>
 </head>
 
 <body>
 
+    <!-- Login View -->
     <div id="login-view">
         <div id="login-form">
-            <h2 style="text-align: center;">Connexion Admin</h2>
+            <h2>Admin Portal</h2>
+            <div style="text-align: left; margin-bottom: 1.5rem; color: var(--text-muted); font-size: 0.95rem;">
+                Connectez-vous pour accéder aux statistiques.
+            </div>
             <input type="text" id="username" placeholder="Nom d'utilisateur">
             <input type="password" id="password" placeholder="Mot de passe">
             <button onclick="login()">Se connecter</button>
-            <p id="error-msg" style="color: red; display: none; text-align: center; margin-top: 10px;"></p>
+            <p id="error-msg" style="color: #ef4444; display: none; margin-top: 1rem; font-size: 0.9rem;"></p>
         </div>
     </div>
 
+    <!-- Dashboard View -->
     <div id="dashboard-view" class="hidden">
-        <div class="container">
-            <h1>Tableau de Bord</h1>
-            <button onclick="logout()" style="width: auto; background: #666; float: right;">Déconnexion</button>
+        <div class="dashboard-container">
+            <div class="dashboard-header">
+                <div class="dashboard-title">Overview</div>
+                <button onclick="logout()" class="logout-btn">Déconnexion</button>
+            </div>
 
-            <div style="display: flex; justify-content: space-between;">
-                <div class="stat-box">
-                    <div>Visites Totales</div>
-                    <div class="stat-value" id="visit-count">-</div>
+            <!-- Stats Cards -->
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <div class="stat-icon">👥</div>
+                    <div class="stat-info">
+                        <h3>Visites Totales</h3>
+                        <div class="stat-value" id="visit-count">-</div>
+                    </div>
                 </div>
-                <div class="stat-box">
-                    <div>Téléchargements CV</div>
-                    <div class="stat-value" id="download-count">-</div>
+                <div class="stat-card">
+                    <div class="stat-icon">📄</div>
+                    <div class="stat-info">
+                        <h3>CV Téléchargés</h3>
+                        <div class="stat-value" id="download-count">-</div>
+                    </div>
                 </div>
             </div>
 
-            <h2>Dernières Visites</h2>
-            <table>
-                <thead>
-                    <tr>
-                        <th>Date/Heure</th>
-                        <th>IP</th>
-                        <th>User Agent</th>
-                    </tr>
-                </thead>
-                <tbody id="visits-table"></tbody>
-            </table>
+            <!-- Visits Table -->
+            <div class="table-section">
+                <h3 class="table-header">Dernières Visites</h3>
+                <div class="table-container">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Date & Heure</th>
+                                <th>IP</th>
+                                <th>Navigateur / Appareil</th>
+                            </tr>
+                        </thead>
+                        <tbody id="visits-table"></tbody>
+                    </table>
+                </div>
+            </div>
 
-            <h2>Derniers Téléchargements</h2>
-            <table>
-                <thead>
-                    <tr>
-                        <th>Date/Heure</th>
-                        <th>Fichier</th>
-                        <th>IP</th>
-                    </tr>
-                </thead>
-                <tbody id="downloads-table"></tbody>
-            </table>
+            <!-- Downloads Table -->
+            <div class="table-section">
+                <h3 class="table-header">Téléchargements Récents</h3>
+                <div class="table-container">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Date & Heure</th>
+                                <th>Fichier</th>
+                                <th>IP</th>
+                            </tr>
+                        </thead>
+                        <tbody id="downloads-table"></tbody>
+                    </table>
+                </div>
+            </div>
         </div>
     </div>
 
@@ -155,6 +347,7 @@
         const API_URL = 'http://localhost:3000/api';
         let token = localStorage.getItem('adminToken');
 
+        // Initial check
         if (token) {
             showDashboard();
         }
@@ -162,6 +355,12 @@
         async function login() {
             const username = document.getElementById('username').value;
             const pass = document.getElementById('password').value;
+            const errorMsg = document.getElementById('error-msg');
+            const btn = document.querySelector('button');
+
+            // Simple loading state
+            btn.innerText = 'Chargement...';
+            errorMsg.style.display = 'none';
 
             try {
                 const res = await fetch(`${API_URL}/login`, {
@@ -176,12 +375,15 @@
                     localStorage.setItem('adminToken', token);
                     showDashboard();
                 } else {
-                    document.getElementById('error-msg').innerText = data.message;
-                    document.getElementById('error-msg').style.display = 'block';
+                    errorMsg.innerText = data.message || 'Identifiants incorrects';
+                    errorMsg.style.display = 'block';
                 }
             } catch (err) {
                 console.error(err);
-                alert('Erreur de connexion');
+                errorMsg.innerText = 'Erreur de connexion au serveur';
+                errorMsg.style.display = 'block';
+            } finally {
+                btn.innerText = 'Se connecter';
             }
         }
 
@@ -203,37 +405,48 @@
                 const res = await fetch(`${API_URL}/stats`, {
                     headers: { 'Authorization': token }
                 });
+
                 if (res.status === 403) {
                     logout();
                     return;
                 }
+
                 const data = await res.json();
 
+                // Animate numbers (simple implementation)
                 document.getElementById('visit-count').innerText = data.visitCount;
                 document.getElementById('download-count').innerText = data.downloadCount;
 
-                const visitsParams = data.recentVisits.map(v => `
+                // Render Tables with modern formatting
+                const renderRow = (col1, col2, col3) => `
                     <tr>
-                        <td>${new Date(v.timestamp).toLocaleString()}</td>
-                        <td>${v.ip}</td>
-                        <td>${v.userAgent}</td>
+                        <td style="font-weight: 500;">${col1}</td>
+                        <td style="font-family: monospace; color: var(--primary);">${col2}</td>
+                        <td style="color: var(--text-muted);">${col3}</td>
                     </tr>
-                `).join('');
-                document.getElementById('visits-table').innerHTML = visitsParams;
+                `;
 
-                const downloadsParams = data.recentDownloads.map(d => `
-                    <tr>
-                        <td>${new Date(d.timestamp).toLocaleString()}</td>
-                        <td>${d.fileName}</td>
-                        <td>${d.ip}</td>
-                    </tr>
-                `).join('');
-                document.getElementById('downloads-table').innerHTML = downloadsParams;
+                const visitsHtml = data.recentVisits.map(v =>
+                    renderRow(new Date(v.timestamp).toLocaleString(), v.ip, v.userAgent)
+                ).join('');
+                document.getElementById('visits-table').innerHTML = visitsHtml;
+
+                const downloadsHtml = data.recentDownloads.map(d =>
+                    renderRow(new Date(d.timestamp).toLocaleString(), d.fileName, d.ip)
+                ).join('');
+                document.getElementById('downloads-table').innerHTML = downloadsHtml;
 
             } catch (err) {
-                console.error(err);
+                console.error('Failed to load stats:', err);
             }
         }
+
+        // Allow "Enter" key to login
+        document.getElementById('password').addEventListener('keypress', function (e) {
+            if (e.key === 'Enter') {
+                login();
+            }
+        });
     </script>
 </body>
 
